@@ -29,6 +29,10 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    public Post findById(Long id){
+        return postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
     public List<Post> findAll(){
         return postRepository.findAll();
     }
