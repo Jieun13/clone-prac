@@ -4,11 +4,15 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import me.jiny.prac220.domain.Post;
+import me.jiny.prac220.domain.Follow;
 import me.jiny.prac220.dto.PostRequest;
+import me.jiny.prac220.repository.FollowRepository;
 import me.jiny.prac220.repository.PostRepository;
 import me.jiny.prac220.user.domain.User;
 import me.jiny.prac220.user.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -17,10 +21,13 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final FollowService followService;
+    private final FollowRepository followRepository;
 
     @Transactional
     public Post create(PostRequest request){
-        User author = userRepository.findByEmail(request.getAuthorEmail()).orElseThrow(EntityNotFoundException::new);
+        String authorEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User author = userRepository.findByEmail(authorEmail).orElseThrow(EntityNotFoundException::new);
         Post post = Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -33,12 +40,19 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<Post> findAll(){
-        return postRepository.findAll();
+    public List<Post> findAll() {
+        return postRepository.findAll(Sort.by("createdAt").descending());
     }
 
     public List<Post> findByAuthor(User author){
-        return postRepository.findAllByAuthor(author);
+        return postRepository.findByAuthorOrderByCreatedAtDesc(author);
+    }
+
+    public List<Post> getUserFeed(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        List<User> followingUsers = user.getFollowing()
+                .stream().map(Follow::getFollowing).toList();
+        return postRepository.findByAuthorInOrderByCreatedAtDesc(followingUsers);
     }
 
     @Transactional

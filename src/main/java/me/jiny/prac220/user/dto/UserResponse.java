@@ -11,14 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponse {
     private Long id;
-    private String name;
+    private String username;
     private String email;
+    private String nickname;
 
     @Builder
     public UserResponse(User user) {
         this.id = user.getId();
-        this.name = user.getUsername();
+        this.username = user.getUsername();
         this.email = user.getEmail();
+        this.nickname = user.getNickname();
     }
 
     public static UserResponse fromEntity(User user) {

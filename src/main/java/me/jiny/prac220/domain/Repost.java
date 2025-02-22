@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "reposts")
 public class Repost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

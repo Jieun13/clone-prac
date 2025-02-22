@@ -25,8 +25,8 @@ public class PostResponse {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .author(UserResponse.fromEntity(post.getAuthor()))
-                .createdAt(post.getCreateAt())
-                .updatedAt(post.getUpdateAt())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 }

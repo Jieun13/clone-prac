@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.jiny.prac220.user.dto.UserRequest;
 import me.jiny.prac220.user.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,19 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("사용자가 인증되지 않음");
+        }
+        String email = authentication.getName();
+        System.out.println("authentication email : " + email);
         return userRepository.findByEmail(email).orElseThrow(()->new IllegalArgumentException("Unexpected User"));
+    }
+
+    @Transactional
+    public User updateNickname(Long id, String nickname) {
+        User user = findById(id);
+        user.updateNickname(nickname);
+        return userRepository.save(user);
     }
 }

@@ -7,7 +7,6 @@ import me.jiny.prac220.dto.LikeResponse;
 import me.jiny.prac220.service.LikeService;
 import me.jiny.prac220.user.domain.User;
 import me.jiny.prac220.user.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,7 @@ public class LikeController {
     }
 
     @GetMapping("/posts/{postId}/likes")
-    @Operation(summary = "포스트 좋아요 전체 조회", description = "해당 포스트에 좋아요를 누른 사용자 목록을 조회한다.")
+    @Operation(summary = "포스트 좋아요 목록 조회", description = "해당 포스트에 좋아요를 누른 사용자 목록을 조회한다.")
     public ResponseEntity<List<LikeResponse>> getAll(@PathVariable Long postId) {
         List<LikeResponse> likeResponses = likeService.findAllByPostId(postId).stream()
                 .map(LikeResponse::fromEntity).toList();

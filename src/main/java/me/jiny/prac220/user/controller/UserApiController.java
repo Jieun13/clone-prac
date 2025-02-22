@@ -5,6 +5,8 @@ import me.jiny.prac220.user.config.CookieUtil;
 import me.jiny.prac220.user.dto.CreateAccessTokenRequest;
 import me.jiny.prac220.user.dto.CreateAccessTokenResponse;
 import me.jiny.prac220.user.config.TokenProvider;
+import me.jiny.prac220.user.dto.UserResponse;
+import me.jiny.prac220.user.dto.UserUpdateRequest;
 import me.jiny.prac220.user.service.TokenService;
 import me.jiny.prac220.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,14 +27,13 @@ public class UserApiController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request){
+    public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request) {
         String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
         return ResponseEntity.status(HttpStatus.CREATED).body(new CreateAccessTokenResponse(newAccessToken));
     }
 
     @DeleteMapping("/logout")
-    //쿠키 삭제
-    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil.deleteCookie(request, response, "jwt_token");
         return ResponseEntity.ok().build();
     }
@@ -60,8 +60,20 @@ public class UserApiController {
         }
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<String> getUser(){
-        return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication().getName());
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
+        User user = userService.findById(userId);
+        return ResponseEntity.ok(UserResponse.fromEntity(user));
+    }
+
+    @PostMapping("/users/{userId}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
+        User user = userService.findById(userId);
+        if (!user.equals(userService.getCurrentUser())){
+            throw new IllegalArgumentException("수정 권한이 없습니다.");
+        }
+        userService.updateNickname(userId, request.getNickname());
+        System.out.println("이름 변경 요청 : " + request.getNickname() + " " + user.getNickname());
+        return ResponseEntity.ok(UserResponse.fromEntity(user));
     }
 }
