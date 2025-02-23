@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jiny.prac220.domain.Hashtag;
 import me.jiny.prac220.domain.Post;
 import me.jiny.prac220.user.dto.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +21,7 @@ public class PostResponse {
     private UserResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Set<Hashtag> hashtags;
 
     public static PostResponse fromEntity(Post post) {
         return PostResponse.builder()
@@ -27,6 +30,7 @@ public class PostResponse {
                 .author(UserResponse.fromEntity(post.getAuthor()))
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
+                .hashtags(post.getHashtags())
                 .build();
     }
 }

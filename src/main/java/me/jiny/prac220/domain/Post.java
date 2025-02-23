@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import me.jiny.prac220.user.domain.User;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,6 +29,14 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @ManyToMany
+    @JoinTable(
+            name = "post_hashtag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
+    )
+    private Set<Hashtag> hashtags = new HashSet<>();
+
     @Builder
     public Post(String title, String content, User author) {
         this.title = title;
@@ -40,5 +50,20 @@ public class Post {
         this.title = title;
         this.content = content;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    private void addHashtag(Hashtag hashtag) {
+        this.hashtags.add(hashtag);
+        hashtag.getPosts().add(this);
+    }
+
+    public void addHashtags(Set<Hashtag> hashtags) {
+        this.hashtags.addAll(hashtags);
+        hashtags.forEach(this::addHashtag);
+    }
+
+    public void updateHashtags(Set<Hashtag> newHashtags) {
+        this.hashtags.clear();
+        this.hashtags.addAll(newHashtags);
     }
 }

@@ -14,4 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByAuthorOrderByCreatedAtDesc(User author);
 
     List<Post> findByAuthorInOrderByCreatedAtDesc(List<User> authors);
+
+    @Query("SELECT p FROM Post p JOIN p.hashtags h WHERE h.keyword = :hashtag")
+    List<Post> findByHashtagsKeyword(@Param("hashtag") String hashtag);
 }

@@ -65,6 +65,12 @@ public class PostController {
         return ResponseEntity.ok(postResponses);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<PostResponse>> findByHashtag(@RequestParam String hashtag) {
+        List<Post> posts = postService.findByHashtag(hashtag);
+        return ResponseEntity.ok(posts.stream().map(PostResponse::fromEntity).toList());
+    }
+
     @PutMapping("/posts/{postId}")
     @Operation(summary = "포스트 아이디로 포스트 수정", description = "해당 포스트를 수장힌다.")
     public ResponseEntity<PostResponse> update(@RequestBody PostRequest postRequest, @PathVariable Long postId) {
