@@ -16,6 +16,7 @@ import java.util.Set;
 @Getter
 @Builder
 public class PostResponse {
+    private Long id;
     private String title;
     private String content;
     private UserResponse author;
@@ -25,6 +26,7 @@ public class PostResponse {
 
     public static PostResponse fromEntity(Post post) {
         return PostResponse.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .author(UserResponse.fromEntity(post.getAuthor()))

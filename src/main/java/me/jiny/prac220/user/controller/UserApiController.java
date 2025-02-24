@@ -73,7 +73,6 @@ public class UserApiController {
             throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
         userService.updateNickname(userId, request.getNickname());
-        System.out.println("이름 변경 요청 : " + request.getNickname() + " " + user.getNickname());
         return ResponseEntity.ok(UserResponse.fromEntity(user));
     }
 }

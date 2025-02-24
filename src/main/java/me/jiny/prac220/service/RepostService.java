@@ -28,8 +28,16 @@ public class RepostService {
         return repostRepository.save(repost);
     }
 
+    public Repost getRepostByPostIdAndUser(Long postId, User user){
+        return repostRepository.findRepostByOriginalPostIdAndUser(postId, user).orElse(null);
+    }
+
     public List<Repost> getAllByUser(User user){
         return repostRepository.findAllByUser(user);
+    }
+
+    public List<Repost> getAllByPostId(Long postId){
+        return repostRepository.findAllByOriginalPostId(postId);
     }
 
     public Repost getRepostById(Long id){

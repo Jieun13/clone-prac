@@ -43,7 +43,6 @@ public class UserService {
             throw new IllegalStateException("사용자가 인증되지 않음");
         }
         String email = authentication.getName();
-        System.out.println("authentication email : " + email);
         return userRepository.findByEmail(email).orElseThrow(()->new IllegalArgumentException("Unexpected User"));
     }
 

@@ -27,6 +27,10 @@ public class LikeService {
         return likeRepository.save(like);
     }
 
+    public Like findByPostAndUser(Long postId, User user){
+        return likeRepository.findLikeByPostIdAndUserId(postId, user.getId());
+    }
+
     public List<Like> findAllByPostId(Long postId){
         return likeRepository.findAllByPostId(postId);
     }

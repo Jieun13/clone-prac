@@ -28,6 +28,17 @@ public class LikeController {
         return ResponseEntity.ok(LikeResponse.fromEntity(like));
     }
 
+    @GetMapping("/posts/{postId}/like")
+    @Operation(summary = "포스트 좋아요 여부", description = "특정 포스트에 좋아요를 눌렀는지 확인한다.")
+    public ResponseEntity<LikeResponse> getLike(@PathVariable Long postId) {
+        User user = userService.getCurrentUser();
+        Like like = likeService.findByPostAndUser(postId, user);
+        if(like == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(LikeResponse.fromEntity(like));
+    }
+
     @GetMapping("/posts/{postId}/likes")
     @Operation(summary = "포스트 좋아요 목록 조회", description = "해당 포스트에 좋아요를 누른 사용자 목록을 조회한다.")
     public ResponseEntity<List<LikeResponse>> getAll(@PathVariable Long postId) {

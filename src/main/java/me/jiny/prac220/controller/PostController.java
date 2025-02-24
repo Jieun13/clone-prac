@@ -54,7 +54,7 @@ public class PostController {
         return ResponseEntity.ok(posts.stream().map(PostResponse::fromEntity).toList());
     }
 
-    @GetMapping("/posts/{authorId}")
+    @GetMapping("/posts/user/{authorId}")
     @Operation(summary = "사용자 아이디로 포스트 조회", description = "사용자가 작성한 포스트를 조회한다.")
     public ResponseEntity<List<PostResponse>> findAllByAuthor(@PathVariable Long authorId) {
         User author = userService.findById(authorId);
@@ -71,8 +71,15 @@ public class PostController {
         return ResponseEntity.ok(posts.stream().map(PostResponse::fromEntity).toList());
     }
 
+    @GetMapping("/posts/{postId}")
+    @Operation(summary = "포스트 아이디로 포스트 조회", description = "해당 포스트를 조회한다.")
+    public ResponseEntity<PostResponse> getPost(@PathVariable Long postId) {
+        Post post = postService.findById(postId);
+        return ResponseEntity.ok(PostResponse.fromEntity(post));
+    }
+
     @PutMapping("/posts/{postId}")
-    @Operation(summary = "포스트 아이디로 포스트 수정", description = "해당 포스트를 수장힌다.")
+    @Operation(summary = "포스트 아이디로 포스트 수정", description = "해당 포스트를 수정한다.")
     public ResponseEntity<PostResponse> update(@RequestBody PostRequest postRequest, @PathVariable Long postId) {
         Post post = postService.update(postRequest, postId);
         return ResponseEntity.ok(PostResponse.fromEntity(post));

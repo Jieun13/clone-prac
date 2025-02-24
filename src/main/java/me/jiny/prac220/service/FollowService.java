@@ -30,6 +30,10 @@ public class FollowService {
         return followRepository.save(follow);
     }
 
+    public Follow findByFollowerIdAndFollowingId(Long userId, Long followingId){
+        return followRepository.findFollowByFollowerIdAndFollowingId(userId, followingId).orElse(null);
+    }
+
     public List<Follow> findAllFollowingsByUserId(Long userId){ // userId가 팔로우 하는 사람 목록 조회
         return followRepository.findAllByFollowerId(userId);
     }

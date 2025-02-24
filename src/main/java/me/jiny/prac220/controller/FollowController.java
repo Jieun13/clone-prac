@@ -30,16 +30,25 @@ public class FollowController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String email = authentication.getName();
-        System.out.println("🔍 현재 로그인한 사용자 이메일: " + email);
-
-        User currentUser = userService.findByEmail(email);
-        System.out.println("✅ 현재 로그인된 유저 ID: " + currentUser.getId());
+        User currentUser = userService.getCurrentUser();
+        if(currentUser.getId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         Follow follow = followService.create(currentUser.getId(), userId);
         return ResponseEntity.ok(FollowResponse.fromEntity(follow));
     }
 
+    @GetMapping("/users/{userId}/follow")
+    @Operation(summary = "팔로우 여부 조회", description = "특정 사용자를 팔로우 중인지 확인합니다.")
+    public ResponseEntity<FollowResponse> getStatus(@PathVariable Long userId) {
+        User currentUser = userService.getCurrentUser();
+        Follow follow = followService.findByFollowerIdAndFollowingId(currentUser.getId(), userId);
+        if(follow == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(FollowResponse.fromEntity(follow));
+    }
 
     @GetMapping("/users/{userId}/followers")
     @Operation(summary = "팔로워 목록 조회", description = "특정 사용자의 팔로워 목록을 조회합니다.")

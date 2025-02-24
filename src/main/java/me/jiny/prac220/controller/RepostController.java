@@ -28,11 +28,22 @@ public class RepostController {
         return ResponseEntity.ok(RepostResponse.fromEntity(repost));
     }
 
-    @GetMapping("/reposts/{repostId}")
-    @Operation(summary = "리포스트 조회", description = "특정 리포스트 정보를 가져온다.")
-    public ResponseEntity<RepostResponse> getRepost(@PathVariable Long repostId) {
-        Repost repost = repostService.getRepostById(repostId);
+    @GetMapping("/posts/{postId}/repost")
+    @Operation(summary = "리포스트 여부 조회", description = "특정 리포스트 여부를 가져온다.")
+    public ResponseEntity<RepostResponse> isReposted(@PathVariable Long postId) {
+        User user = userService.getCurrentUser();
+        Repost repost = repostService.getRepostByPostIdAndUser(postId, user);
+        if (repost == null) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(RepostResponse.fromEntity(repost));
+    }
+
+    @GetMapping("/posts/{postId}/reposts")
+    @Operation(summary = "리포스트 목록 조회", description = "특정 리포스트 목록 정보를 가져온다.")
+    public ResponseEntity<List<RepostResponse>> getReposts(@PathVariable Long postId) {
+        List<RepostResponse> repostResponses = repostService.getAllByPostId(postId).stream().map(RepostResponse::fromEntity).toList();
+        return ResponseEntity.ok(repostResponses);
     }
 
     @GetMapping("/users/reposts")
