@@ -1,5 +1,6 @@
 package me.jiny.prac220.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Repost {
     @ManyToOne
     private Post originalPost;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime createdAt;
 
     @Builder

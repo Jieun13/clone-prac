@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import me.jiny.prac220.user.domain.User;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -51,5 +53,9 @@ public class UserService {
         User user = findById(id);
         user.updateNickname(nickname);
         return userRepository.save(user);
+    }
+
+    public List<User> searchUsers(String query) {
+        return userRepository.findByNicknameContaining(query);
     }
 }

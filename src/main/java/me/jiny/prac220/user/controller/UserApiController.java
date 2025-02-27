@@ -59,20 +59,4 @@ public class UserApiController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // 잘못된 토큰 처리
         }
     }
-
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
-        User user = userService.findById(userId);
-        return ResponseEntity.ok(UserResponse.fromEntity(user));
-    }
-
-    @PostMapping("/users/{userId}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
-        User user = userService.findById(userId);
-        if (!user.equals(userService.getCurrentUser())){
-            throw new IllegalArgumentException("수정 권한이 없습니다.");
-        }
-        userService.updateNickname(userId, request.getNickname());
-        return ResponseEntity.ok(UserResponse.fromEntity(user));
-    }
 }
