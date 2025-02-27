@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private final TokenProvider tokenProvider;
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
