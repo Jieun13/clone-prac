@@ -1,6 +1,7 @@
 package me.jiny.prac220.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jiny.prac220.domain.Repost;
 import me.jiny.prac220.dto.RepostResponse;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Tag(name = "리포스트 API", description = "리포스트 관련 API")
 public class RepostController {
 
     private final RepostService repostService;

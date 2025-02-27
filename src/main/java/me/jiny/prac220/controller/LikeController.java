@@ -1,6 +1,7 @@
 package me.jiny.prac220.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jiny.prac220.domain.Like;
 import me.jiny.prac220.dto.LikeResponse;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Tag(name = "좋아요 API", description = "좋아요 관련 API")
 public class LikeController {
 
     private final LikeService likeService;

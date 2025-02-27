@@ -1,6 +1,7 @@
 package me.jiny.prac220.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jiny.prac220.domain.Follow;
 import me.jiny.prac220.dto.FollowResponse;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Tag(name = "팔로우 API", description = "팔로우 관련 API")
 public class FollowController {
 
     private final FollowService followService;

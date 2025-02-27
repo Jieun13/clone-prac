@@ -1,6 +1,7 @@
 package me.jiny.prac220.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jiny.prac220.domain.Post;
 import me.jiny.prac220.dto.PostRequest;
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "포스트 API", description = "포스트 관련 API")
 public class PostController {
 
     private final PostService postService;

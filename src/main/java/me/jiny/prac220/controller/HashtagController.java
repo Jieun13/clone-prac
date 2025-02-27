@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Hashtag", description = "해시태그 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/hashtag")
+@Tag(name = "해시태그 API", description = "해시태그 관련 API")
 public class HashtagController {
     private final HashtagService hashtagService;
 

@@ -1,6 +1,7 @@
 package me.jiny.prac220.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jiny.prac220.domain.Comment;
 import me.jiny.prac220.domain.Post;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "댓글 API", description = "댓글 관련 API")
 public class CommentController {
 
     private final CommentService commentService;
