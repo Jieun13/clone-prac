@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -57,7 +58,7 @@ public class FollowController {
                 followService.findAllFollowersByUserId(userId)
                         .stream()
                         .map(FollowResponse::fromEntity)
-                        .toList()
+                        .collect(Collectors.toList())
         );
     }
 
@@ -68,7 +69,7 @@ public class FollowController {
                 followService.findAllFollowingsByUserId(userId)
                         .stream()
                         .map(FollowResponse::fromEntity)
-                        .toList()
+                        .collect(Collectors.toList())
         );
     }
 

@@ -1,5 +1,6 @@
 package me.jiny.prac220.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import me.jiny.prac220.user.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +28,10 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private LocalDateTime updatedAt;
 
     @ManyToMany
@@ -36,6 +41,9 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "hashtag_id")
     )
     private Set<Hashtag> hashtags = new HashSet<>();
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @Builder
     public Post(String title, String content, User author) {

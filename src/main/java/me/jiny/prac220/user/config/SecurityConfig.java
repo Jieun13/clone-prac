@@ -41,7 +41,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public WebSecurityCustomizer configure(){
         return (web) -> web.ignoring()
-                .requestMatchers("/resources/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**");
+                .requestMatchers("/resources/**", "/swagger-ui/**", "/v3/api-docs/**");
     }
 
     @Bean
@@ -56,7 +56,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                         .anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
